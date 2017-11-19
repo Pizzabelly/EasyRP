@@ -13,3 +13,5 @@ Instead just use an easy conifg file
     - It should report errors from your config file (if there are any)
 - Go into discord settings and add the EasyRP.exe as a game
 - Discord should automatically change the path of EasyRP.exe to your Discord Rich Presence
+
+- You can edit the config any time while the program is running to change the presence
