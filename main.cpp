@@ -1,54 +1,45 @@
+#include <iostream>
+#include <chrono>
+#include <thread>
+#include <csignal>
 #include "config.hpp"
 #include "discord.hpp"
-#include <iostream>
-#include <windows.h>
-#include <csignal>
 
-#define CONFIG "config.ini"
-
-//quit for stopping the loop
-//firstUpdate to update without changing the config (first loop only)
-bool quit = false;
-bool firstUpdate = true;
-
-//Break the loop and properly shutdown discord-rp
-void shutdown_signal(int sig)
-{
-    signal(sig, shutdown_signal);
-    Shutdown();
-    quit = true;
-}
+#define CONFIG_PATH "config.ini"
 
 //Loop to keep the program running as well as checking the config file for updates
 int main(void)
 {
     //Define When to Shutdown
-    signal(SIGINT, shutdown_signal);
-    signal(SIGTERM, shutdown_signal);
+    signal(SIGINT, Shutdown);
+    signal(SIGTERM, Shutdown);
 #ifdef SIGBREAK
-    signal(SIGBREAK, shutdown_signal);
+    signal(SIGBREAK, Shutdown);
 #endif
+
+    config_t prevConfig = config;
+    setPresenceVariables(CONFIG_PATH);
+
+    //Start discord-rpc
+    InitDiscord(config.clientId.c_str());
    
-    //Grab initial variables from the config 
-    setPresenceVariables(CONFIG);
-    //Start discord-rp
-    InitDiscord(clientID.c_str());
-    
     //Loop to keep program running also to check for updated config
-    while(!quit)
+    do
     {
-        if (configFileChanged(CONFIG) || firstUpdate)
-        {
+        if (!config.compare(&prevConfig))
+        { 
             //Print and set variables for the presence
-            printVariables();
-            UpdatePresence(state.c_str(), details.c_str(), largeImage.c_str(),
-                    smallImage.c_str(), smallImageText.c_str(), largeImageText.c_str());
-            //Switch firstUpdate as it is not the first update anymore ;)
-            if (firstUpdate)
-                firstUpdate = false;
+            printVariables(config);
+            updatePresence(config.state.c_str(), config.details.c_str(), config.startTimestamp, config.endTimestamp,
+                    config.smallImage.first.c_str(), config.smallImage.second.c_str(), 
+                    config.largeImage.first.c_str(), config.largeImage.second.c_str());
         }
-        Sleep(10000);
+        prevConfig = config;
+        setPresenceVariables(CONFIG_PATH);
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     }
+    while(true);
+
     return 0;
 }
 
