@@ -1,7 +1,7 @@
 # EasyRP (Custom Discord Rich Presence)
 
 EasyRP is a small program to use the DiscordRPC library without any knowledge of programming.
-Instead just use an easy conifg file
+Instead just use an easy config file
 
 **Usage**
 - First you need to register a Rich Presence application with discord
