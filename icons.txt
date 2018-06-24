@@ -1,0 +1,10 @@
+fest= Splatfest , Small Icon
+unknow= Grizzco question mark , Small Icon
+turf= Turf Wars , Small Icon
+priv= Private Battle, Small Icon
+rank= Ranked Battles, Small Icon
+salmon= Salmon Run, Small Icon
+league= League Battles, Small Icon
+octo= Octo Expansion icon, Big Icon
+splat= Splatoon 2 icon, Big Icon
+SP= Single Player (Octo Canyon), Big Icon
