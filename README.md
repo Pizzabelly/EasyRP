@@ -14,7 +14,7 @@ Instead just use an easy config file
 [**Identifiers**]
 - ClientID= # client id here
 - State= # subtext here
-- Details= # header text here)
+- Details= # header text here
 
 [**Images**]
 - LargeImage= # large image name
