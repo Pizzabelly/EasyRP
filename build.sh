@@ -10,7 +10,7 @@ read -p "Press any key to continue building..."
 echo "Building discord-rpc from its source"
 git clone https://github.com/discordapp/discord-rpc.git discord-rpc
 cd discord-rpc
-mkidr -p build && cd build
+mkdir -p build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make
 
