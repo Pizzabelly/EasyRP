@@ -19,8 +19,6 @@ int main(void)
     signal(SIGBREAK, Shutdown);
 #endif
 
-    config_t prevConfig = config;
-
     // start discord-rpc
     setPresenceVariables(CONFIG_PATH);
     InitDiscord(config.clientId);
@@ -31,12 +29,10 @@ int main(void)
         if (setPresenceVariables(CONFIG_PATH) || force_update)
         { 
             // print and set variables for the presence
-            printVariables(config);
+            printVariables(&config);
             updatePresence(&config);
         }
         if (force_update) force_update = false;
-//      prevConfig = config;
-//      setPresenceVariables(CONFIG_PATH);
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     }
     while(true);

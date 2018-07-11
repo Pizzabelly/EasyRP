@@ -48,17 +48,16 @@ bool setPresenceVariables(std::string configPath)
         }
     }
     return changed;
-    
 }
 
 // print values for the current settings from the config file
-void printVariables(struct config_t c)
+void printVariables(struct config_t* c)
 {
-    printf("\nCurrent Presence (%s) :", c.clientId.c_str());
-    printf("\nState: %s", c.state.c_str());
-    printf("\nDetails: %s", c.details.c_str());
-    printf("\nLarge Image: '%s' with toolip, '%s'", c.largeImg.key.c_str(), c.largeImg.text.c_str());
-    printf("\nSmall Image: '%s' with toolip, '%s'", c.smallImg.key.c_str(), c.smallImg.text.c_str());
-    printf("\nStart Time: %lld", c.startTime);
-    printf("\nEnd Time: %lld\n", c.endTime);
+    printf("\nCurrent Presence (%s) :", c->clientId.c_str());
+    printf("\nState: %s", c->state.c_str());
+    printf("\nDetails: %s", c->details.c_str());
+    printf("\nLarge Image: '%s' with toolip, '%s'", c->largeImg.key.c_str(), c->largeImg.text.c_str());
+    printf("\nSmall Image: '%s' with toolip, '%s'", c->smallImg.key.c_str(), c->smallImg.text.c_str());
+    printf("\nStart Time: %lld", c->startTime);
+    printf("\nEnd Time: %lld\n", c->endTime);
 }

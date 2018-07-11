@@ -68,16 +68,16 @@ void updatePresence(config_t* c)
     if (c->startTime >= 0) discordPresence.startTimestamp = (int64_t)c->startTime;
     if (c->endTime >= 0) discordPresence.endTimestamp = (int64_t)c->endTime;
 
-    // Make sure not to set the optional variables if they are not defined in the config
+    // make sure not to set the optional variables if they are not defined in the config
     if (c->smallImg.key.length() >= 1) discordPresence.smallImageKey = c->smallImg.key.c_str();
     if (c->smallImg.text.length() >= 1) discordPresence.smallImageText = c->smallImg.text.c_str();
     if (c->largeImg.text.length() >= 1) discordPresence.largeImageText = c->largeImg.text.c_str();
 
-    //Actaully update the presence
+    // actaully update the presence
     Discord_UpdatePresence(&discordPresence);
 }
 
-//Initialize Discord Rich Presence
+// initialize discord rich presence
 void InitDiscord(std::string clientId)
 {
     DiscordEventHandlers handlers;
