@@ -1,14 +1,6 @@
-### CMake ###
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
-build*.d
+build/
+libdiscord-rpc.a
+discord-rpc.dll
 
 # Compiled Object files
 *.slo

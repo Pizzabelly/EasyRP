@@ -7,10 +7,12 @@
 
 #define CONFIG_PATH "config.ini"
 
-//Loop to keep the program running as well as checking the config file for updates
+bool force_update = true;
+
+// loop to keep the program running as well as checking the config file for updates
 int main(void)
 {
-    //Define When to Shutdown
+    // define when to shutdown
     signal(SIGINT, Shutdown);
     signal(SIGTERM, Shutdown);
 #ifdef SIGBREAK
@@ -18,24 +20,23 @@ int main(void)
 #endif
 
     config_t prevConfig = config;
-    setPresenceVariables(CONFIG_PATH);
 
-    //Start discord-rpc
-    InitDiscord(config.clientId.c_str());
+    // start discord-rpc
+    setPresenceVariables(CONFIG_PATH);
+    InitDiscord(config.clientId);
    
-    //Loop to keep program running also to check for updated config
+    // loop to keep program running also to check for updated config
     do
     {
-        if (!config.compare(&prevConfig))
+        if (setPresenceVariables(CONFIG_PATH) || force_update)
         { 
-            //Print and set variables for the presence
+            // print and set variables for the presence
             printVariables(config);
-            updatePresence(config.state.c_str(), config.details.c_str(), config.startTimestamp, config.endTimestamp,
-                    config.smallImage.first.c_str(), config.smallImage.second.c_str(), 
-                    config.largeImage.first.c_str(), config.largeImage.second.c_str());
+            updatePresence(&config);
         }
-        prevConfig = config;
-        setPresenceVariables(CONFIG_PATH);
+        if (force_update) force_update = false;
+//      prevConfig = config;
+//      setPresenceVariables(CONFIG_PATH);
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     }
     while(true);

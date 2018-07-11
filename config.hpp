@@ -4,6 +4,11 @@ bool setPresenceVariables(std::string configPath);
 
 void printVariables(struct config_t c);
 
+struct pimage_t {
+    std::string key;
+    std::string text;
+};
+
 //struct type to hold info about the games configuration
 struct config_t
 {
@@ -13,24 +18,28 @@ struct config_t
     std::string details;
     std::string state;
     // images to show for now playing
-    std::pair<std::string, std::string> smallImage;
-    std::pair<std::string, std::string> largeImage;
+    pimage_t smallImg;
+    pimage_t largeImg;
     // timestamps for game; note: these usually have to be within about 24 hours :(
-    long long startTimestamp;
-    long long endTimestamp;
-    
+    long long startTime;
+    long long endTime;
+   
+    /*
     // Compare this struct to previous struct
-    bool compare(struct config_t* p)
+    bool operator==(const config_t& c, const config_t& p)
     {
-        if (p->clientId != clientId) return false;
-        else if (p->details != details) return false;
-        else if (p->state != state) return false;
-        else if (p->smallImage != smallImage) return false;
-        else if (p->largeImage != largeImage) return false;
-        else if (p->startTimestamp != startTimestamp) return false;
-        else if (p->endTimestamp != endTimestamp) return false;
+        if (p->clientId != c->clientId) return false;
+        else if (p->details != c->details) return false;
+        else if (p->state != c->state) return false;
+        else if (p->smallImage.key != c->smallImage.key) return false;
+        else if (p->smallImage.text != c->smallImage.text) return false;
+        else if (p->largeImage.key != c->largeImage.key) return false;
+        else if (p->largeImage.text != c->largeImage.text) return false;
+        else if (p->startTimestamp != c->startTimestamp) return false;
+        else if (p->endTimestamp != c->endTimestamp) return false;
         return true;
     }
+    */
 };
 
 extern struct config_t config;

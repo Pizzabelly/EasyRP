@@ -4,89 +4,94 @@
 #include <stdint.h>
 #include <string>
 #include <cstring>
-#include "include/discord_rpc.h"
+#include "discord_rpc.h"
+#include "config.hpp"
 
-//Handle Discord Ready Event
+// handle discord ready event
 static void handleDiscordReady(const DiscordUser* u)
 {
-    std::cout << "\nDiscord: ready" << std::endl;
+    printf("\nDiscord: ready\n");
 }
 
-//Handle Discord Disconnected Event
+// handle discord disconnected event
 static void handleDiscordDisconnected(int errcode, const char* message)
 {
-    std::cout << printf("\nDiscord: disconnected (%d: %s)\n", errcode, message);
+    printf("\nDiscord: disconnected (%d: %s)\n", errcode, message);
 }
 
-//Handle Discord Error Event
+// handle discord error event
 static void handleDiscordError(int errcode, const char* message)
 {
-    std::cout << printf("\nDiscord: error (%d: %s)\n", errcode, message);
+    printf("\nDiscord: error (%d: %s)\n", errcode, message);
 }
 
-//Shutdown discord-rp
+// shutdown discord-rpc
 void Shutdown(int sig)
 {
-    std::cout << "\nShutting Down..." << std::endl;
+    printf("\nshutting down...\n");
     Discord_Shutdown();
     exit(sig);
 }
 
-//Update Discord Rich Presence
-void updatePresence(const char* state, const char* details, long long startTimestamp, long long endTimestamp, const char* smallImageKey,
-        const char* smallImageText, const char* largeImageKey, const char* largeImageText)
+// update discord rich presence
+void updatePresence(config_t* c)
 {
-    //Set required variables
+    // set required variables
     char buffer[256];
     DiscordRichPresence discordPresence;
     memset(&discordPresence, 0, sizeof(discordPresence));
 
-    //Make sure that state nor details are either too big for discord or not set, then set them
-    if (sizeof(state) > 128 || strlen(state) < 1)
+    // make sure required parameters are set, if not dont update untill they are corrected 
+    // TODO: find the actual character limit for state and details
+    if (c->state.length() < 1 || c->state.length() > 100)
     {
-        std::cout << "\nState parameter is too long or not set\nPress any key to exit..." << std::endl;
-        Shutdown(1);
+        printf("\nState parameter is too long or not set\nPress any key to exit...\n");
+        return;
     }
-    discordPresence.state = state;
-    if (sizeof(details) > 128 || strlen(details) < 1)
-    {
-        std::cout << "\nDetails parameter is too long or not set\nPress any key to exit..." << std::endl;
-        Shutdown(1); 
-    }
-    sprintf(buffer, "%s", details);
-    discordPresence.details = buffer;
-    if (strlen(largeImageKey) < 1)
-    {
-        std::cout << "\nLargeImage parameter not set\nPress any key to exit..." << std::endl;
-        Shutdown(1); 
-    }
-    discordPresence.largeImageKey = largeImageKey;
-    
-    if (startTimestamp >= 0) discordPresence.startTimestamp = (int64_t)startTimestamp;
-    if (endTimestamp >= 0) discordPresence.endTimestamp = (int64_t)endTimestamp;
 
-    //Make sure not to set the optional variables if they are not defined in the config
-    if (!(strlen(smallImageKey) < 1)) discordPresence.smallImageKey = smallImageKey;
-    if (!(strlen(smallImageText) < 1)) discordPresence.smallImageText = smallImageText;
-    if (!(strlen(largeImageText) < 1)) discordPresence.largeImageText = largeImageText;
+    if (c->details.length() < 1 || c->details.length() > 100)
+    {
+        printf("\nDetails parameter is too long or not set\nPress any key to exit...\n");
+        return;
+    }
+    if (c->largeImg.key.length() < 1 || c->largeImg.key.length() > 100)
+    {
+        printf("\nLargeImage parameter not set\nPress any key to exit...\n");
+        return;
+    }
+
+    discordPresence.state = c->state.c_str();
+    discordPresence.largeImageKey = c->largeImg.key.c_str();
+    sprintf(buffer, "%s", c->details.c_str());
+    discordPresence.details = buffer;
+
+    if (c->startTime >= 0) discordPresence.startTimestamp = (int64_t)c->startTime;
+    if (c->endTime >= 0) discordPresence.endTimestamp = (int64_t)c->endTime;
+
+    // Make sure not to set the optional variables if they are not defined in the config
+    if (c->smallImg.key.length() >= 1) discordPresence.smallImageKey = c->smallImg.key.c_str();
+    if (c->smallImg.text.length() >= 1) discordPresence.smallImageText = c->smallImg.text.c_str();
+    if (c->largeImg.text.length() >= 1) discordPresence.largeImageText = c->largeImg.text.c_str();
 
     //Actaully update the presence
     Discord_UpdatePresence(&discordPresence);
 }
 
 //Initialize Discord Rich Presence
-void InitDiscord(const char* clientID)
+void InitDiscord(std::string clientId)
 {
     DiscordEventHandlers handlers;
     memset(&handlers, 0, sizeof(handlers));
     handlers.ready = handleDiscordReady;
     handlers.errored = handleDiscordError;
     handlers.disconnected = handleDiscordDisconnected;
-    if (strlen(clientID) < 1)
+    if (clientId.length() < 1 || clientId == "123456789012345678")
     {
-        std::cout << "\nClientID not set" << std::endl;
+        printf("ClientID not correct (or not set), unless by god you \
+somehow got 123456789012345678 as your clientid please change \
+this to the one you registered on the website");
         Shutdown(1);
     }
-    Discord_Initialize(clientID, &handlers, 1, NULL);
+    Discord_Initialize(clientId.c_str(), &handlers, 1, NULL);
 }
 
