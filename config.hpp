@@ -1,15 +1,11 @@
 #include <iostream>
 
-bool setPresenceVariables(std::string configPath);
-
-void printVariables(struct config_t* c);
-
 struct pimage_t {
     std::string key;
     std::string text;
 };
 
-//struct type to hold info about the games configuration
+// struct type to hold info about the games configuration
 struct config_t
 {
     // id for the discord developer app 
@@ -26,6 +22,9 @@ struct config_t
     // timestamps for game; note: these usually have to be within about 24 hours :(
     long long startTime;
     long long endTime;
+
+   	bool update();
+   	void print();
 };
 
 extern struct config_t config;

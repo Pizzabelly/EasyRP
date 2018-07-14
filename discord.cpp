@@ -7,10 +7,18 @@
 #include "discord_rpc.h"
 #include "config.hpp"
 
+// shutdown discord-rpc
+void Shutdown(int sig)
+{
+    printf("\nshutting down...\n");
+    Discord_Shutdown();
+    exit(sig);
+}
+
 // handle discord ready event
 static void handleDiscordReady(const DiscordUser* u)
 {
-    printf("\nDiscord: ready\n");
+    printf("\nDisplaying Presence for %s#%s\n", u->username, u->discriminator);
 }
 
 // handle discord disconnected event
@@ -23,14 +31,7 @@ static void handleDiscordDisconnected(int errcode, const char* message)
 static void handleDiscordError(int errcode, const char* message)
 {
     printf("\nDiscord: error (%d: %s)\n", errcode, message);
-}
-
-// shutdown discord-rpc
-void Shutdown(int sig)
-{
-    printf("\nshutting down...\n");
-    Discord_Shutdown();
-    exit(sig);
+    Shutdown(1);
 }
 
 // update discord rich presence
@@ -75,6 +76,9 @@ void updatePresence(config_t* c)
 
     // actaully update the presence
     Discord_UpdatePresence(&discordPresence);
+
+    // handle callbacks
+    Discord_RunCallbacks();
 }
 
 // initialize discord rich presence

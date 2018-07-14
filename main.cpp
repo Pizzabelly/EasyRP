@@ -19,17 +19,20 @@ int main(void)
     signal(SIGBREAK, Shutdown);
 #endif
 
+	// main config instance
+	config_t config;
+    config.update();
+
     // start discord-rpc
-    setPresenceVariables(CONFIG_PATH);
     InitDiscord(config.clientId);
    
     // loop to keep program running also to check for updated config
     do
     {
-        if (setPresenceVariables(CONFIG_PATH) || force_update)
+        if (config.update() || force_update)
         { 
             // print and set variables for the presence
-            printVariables(&config);
+            config.print();
             updatePresence(&config);
         }
         if (force_update) force_update = false;

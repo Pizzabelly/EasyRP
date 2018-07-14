@@ -1,6 +1,8 @@
-build/
+# EasyRP specific files
+build*/
 libdiscord-rpc.a
 discord-rpc.dll
+discord-rpc.lib
 
 # Compiled Object files
 *.slo
@@ -16,10 +18,6 @@ discord-rpc.dll
 *.so
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
 
 # Compiled Static libraries
 *.lai
