@@ -1,6 +1,6 @@
 # EasyRP (Custom Discord Rich Presence)
 
-EasyRP is a small program to use the discord-rpc, to make a custom rich presence/game on discord.
+EasyRP is a small program to use the discord-rpc, to make a custom rich presence/game on discord.  
 using just an easy config file.
 
 **Usage**
@@ -10,9 +10,9 @@ using just an easy config file.
      - Enable rich presence for your app and add some assets
 - Download the latest release of EasyRP from here https://github.com/Pizzabelly/EasyRP/releases 
 - Edit the config file with the information from your newly registered app
-- Run [easyrp application binary](https://github.com/Pizzabelly/EasyRP/releases) (it should open a cmd window)
+- Run [easyrp binary](https://github.com/Pizzabelly/EasyRP/releases) (it should open a cmd window)
     - It *should* report errors from your config file (if there are any)
 - Discord should show the game on your profile
 	- if not, add the exe as a game on discord and the file path should change to your presence
 
-- You can edit the config any time while the program is running to change the presence
+- You can edit the config any time while the program is running to change the presence (make sure to save the file)
