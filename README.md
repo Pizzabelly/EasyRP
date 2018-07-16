@@ -1,7 +1,7 @@
 # EasyRP (Custom Discord Rich Presence)
 
 EasyRP is a small program to use the DiscordRPC library without any knowledge of programming.
-Instead just use an easy conifg file
+Instead just use an easy config file
 
 **Usage**
 - First you need to register a Rich Presence application with discord
@@ -10,6 +10,20 @@ Instead just use an easy conifg file
      - Enable rich presence for your app and add some assets
 - Download the latest release of EasyRP from here https://github.com/Pizzabelly/EasyRP/releases
 - Edit the config file with the information from your newly registered app
+
+[**Identifiers**]
+- ClientID= # client id here
+- State= # subtext here
+- Details= # header text here
+
+[**Images**]
+- LargeImage= # large image name
+- SmallImage= # small image name
+- LargeImageTooltip= # large image context
+- SmallImageTooltip= # small image context
+
+**EXPLANATION:** The clientID is the value at the top of your Rich Presence application. The images are supposed to be uploaded as assets in the Rich Presence application you've made. Then, input the name of the assets in the config file. The tooltips are basically the text that appears when you hover over it. The state and details are the text that appears under the images.
+
 - Run [EasyRP.exe](https://github.com/Pizzabelly/EasyRP/releases) (it should open a cmd window)
     - It should report errors from your config file (if there are any)
 - Go into discord settings and add the [EasyRP.exe](https://github.com/Pizzabelly/EasyRP/releases) as a game
