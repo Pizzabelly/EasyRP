@@ -4,7 +4,6 @@ project('EasyRP', 'cpp',
 
 compiler = meson.get_compiler('cpp')
 
-threads = dependency('threads')
 if host_machine.system() == 'Windows'
     discordrpc = compiler.find_library('discord-rpc', dirs: meson.source_root())
 else
@@ -15,7 +14,7 @@ rpc_inc = include_directories('discord-rpc/include')
 
 exe = executable('easyrp', 'main.cpp', 'config.cpp', 'discord.cpp',
   include_directories : rpc_inc,
-  dependencies : [threads, discordrpc],
+  dependencies : [discordrpc],
   install : false)
   
 test('basic', exe)

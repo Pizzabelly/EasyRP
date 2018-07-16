@@ -20,10 +20,13 @@ struct config_t
     pimage_t largeImg;
 
     // timestamps for game; note: these usually have to be within about 24 hours :(
-    long long startTime;
-    long long endTime;
+    long long startTime = 0;
+    long long endTime = 0;
 
-   	bool update();
+	// true if presence needs to be updated
+	bool changed = true;
+
+   	void update();
    	void print();
 };
 

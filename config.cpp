@@ -6,19 +6,22 @@
 
 #define CONFIG_PATH "config.ini"
 
+std::string setVar(std::string val, config_t* c)
+{
+	c->changed = true;
+	return val;
+}
+
 // check and set the global presence config 
-bool config_t::update()
+void config_t::update()
 {
     // open config file
-    std::ifstream configFile(CONFIG_PATH);
-    
-    // bool that is true if any parsed value is different
-    bool changed = true;
+    std::ifstream config_file(CONFIG_PATH);
 
     // "parse" config file
     // this is super specific and is NOT proper ini parsing
     // but it works, saves memory and avoids massive dependencies
-    for (std::string line; std::getline(configFile, line);) 
+    for (std::string line; std::getline(config_file, line);) 
     {
         // if line is ini comment (;), whitespace, or '[', skip it
         char first = line.front();
@@ -35,29 +38,18 @@ bool config_t::update()
             if (std::getline(line_stream, value)) 
             { 
                 if (isspace(value.front())) value.erase(0, 1);
-                if (key == "ClientID" && value.compare(this->clientId) != 0) 
-                	this->clientId = value; 
-                else if (key == "State" && value.compare(this->state) != 0)
-                    this->state = value; 
-                else if (key == "Details" && value.compare(this->details) != 0) 
-                    this->details = value; 
-                else if (key == "LargeImage" && value.compare(this->largeImg.key) !=0) 
-                    this->largeImg.key = value;
-                else if (key == "SmallImage" && value.compare(this->smallImg.key) != 0) 
-                    this->smallImg.key = value;
-                else if (key == "LargeImageTooltip" && value.compare(this->largeImg.text) != 0)
-                    this->largeImg.text = value;
-                else if (key == "SmallImageTooltip" && value.compare(this->smallImg.text) != 0)
-                    this->smallImg.text = value;
-                else if (key == "StartTimestamp" && value.compare(std::to_string(this->startTime)) != 0) 
-                    this->startTime = std::strtoll(value.c_str(), NULL, 10);
-                else if (key == "EndTimestamp" && value.compare(std::to_string(this->endTime)) != 0)
-                    this->endTime = std::strtoll(value.c_str(), NULL, 10);
-                else changed = false;
+                if (key == "ClientID" && value.compare(this->clientId) != 0) this->clientId = setVar(value, this); 
+                else if (key == "State" && value.compare(this->state) != 0) this->state = setVar(value, this); 
+                else if (key == "Details" && value.compare(this->details) != 0) this->details = setVar(value, this); 
+                else if (key == "LargeImage" && value.compare(this->largeImg.key) !=0) this->largeImg.key = setVar(value, this);
+                else if (key == "SmallImage" && value.compare(this->smallImg.key) != 0) this->smallImg.key = setVar(value, this);
+                else if (key == "LargeImageTooltip" && value.compare(this->largeImg.text) != 0) this->largeImg.text = setVar(value, this);
+                else if (key == "SmallImageTooltip" && value.compare(this->smallImg.text) != 0) this->smallImg.text = setVar(value, this);
+                else if (key == "StartTimestamp" && value.compare(std::to_string(this->startTime)) != 0) this->startTime = std::strtoll(setVar(value, this).c_str(), NULL, 10);
+                else if (key == "EndTimestamp" && value.compare(std::to_string(this->endTime)) != 0) this->endTime = std::strtoll(setVar(value, this).c_str(), NULL, 10);
             }
         }
     }
-    return changed;
 }
 
 // print values for the current settings from the config file

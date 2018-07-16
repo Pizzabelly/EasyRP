@@ -4,8 +4,10 @@
 #include <stdint.h>
 #include <string>
 #include <cstring>
-#include "discord_rpc.h"
 #include "config.hpp"
+
+#define DISCORD_DISABLE_IO_THREAD
+#include "discord_rpc.h"
 
 // shutdown discord-rpc
 void Shutdown(int sig)
@@ -38,7 +40,6 @@ static void handleDiscordError(int errcode, const char* message)
 void updatePresence(config_t* c)
 {
     // set required variables
-    char buffer[256];
     DiscordRichPresence discordPresence;
     memset(&discordPresence, 0, sizeof(discordPresence));
 
@@ -49,7 +50,6 @@ void updatePresence(config_t* c)
         printf("\nState parameter is too long or not set\nPress any key to exit...\n");
         return;
     }
-
     if (c->details.length() < 1 || c->details.length() > 100)
     {
         printf("\nDetails parameter is too long or not set\nPress any key to exit...\n");
@@ -63,6 +63,7 @@ void updatePresence(config_t* c)
 
     discordPresence.state = c->state.c_str();
     discordPresence.largeImageKey = c->largeImg.key.c_str();
+    char buffer[256];
     sprintf(buffer, "%s", c->details.c_str());
     discordPresence.details = buffer;
 
@@ -76,24 +77,28 @@ void updatePresence(config_t* c)
 
     // actaully update the presence
     Discord_UpdatePresence(&discordPresence);
+}
+
+void refreshDiscord()
+{
+	// manually handle this
+    Discord_UpdateConnection();
 
     // handle callbacks
     Discord_RunCallbacks();
 }
 
 // initialize discord rich presence
-void InitDiscord(std::string clientId)
+void initDiscord(std::string clientId)
 {
     DiscordEventHandlers handlers;
     memset(&handlers, 0, sizeof(handlers));
     handlers.ready = handleDiscordReady;
     handlers.errored = handleDiscordError;
     handlers.disconnected = handleDiscordDisconnected;
-    if (clientId.length() < 1 || clientId == "123456789012345678")
+    if (clientId.length() < 1 || clientId.compare("123456789012345678") == 0)
     {
-        printf("ClientID not correct (or not set), unless by god you \
-somehow got 123456789012345678 as your clientid please change \
-this to the one you registered on the website");
+        printf("ClientID not correct (or not set).\n Unless by god you somehow got 123456789012345678 as your clientid please change this to the one you registered on the website");
         Shutdown(1);
     }
     Discord_Initialize(clientId.c_str(), &handlers, 1, NULL);

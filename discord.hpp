@@ -1,5 +1,7 @@
 void updatePresence(config_t* c);
 
-void InitDiscord(std::string clientID);
+void initDiscord(std::string clientID);
+
+void refreshDiscord();
 
 void Shutdown(int sig);
