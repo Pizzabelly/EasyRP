@@ -1,6 +1,6 @@
-void updatePresence(config_t* c);
+void updatePresence(config_t *c);
 
-void initDiscord(std::string clientID);
+void initDiscord(std::string client_id);
 
 void refreshDiscord();
 
