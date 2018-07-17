@@ -42,17 +42,15 @@ void updatePresence(config_t *c) {
     // corrected
     // TODO: find the actual character limit for state and details
     if (c->state.length() < 1 || c->state.length() > 100) {
-        printf("\nState parameter is too long or not set\nPress any key to "
-               "exit...\n");
+        printf("\nState parameter is too long or not set\n");
         return;
     }
     if (c->details.length() < 1 || c->details.length() > 100) {
-        printf("\nDetails parameter is too long or not set\nPress any key to "
-               "exit...\n");
+        printf("\nDetails parameter is too long or not set\n");
         return;
     }
     if (c->large_img.key.length() < 1 || c->large_img.key.length() > 100) {
-        printf("\nLargeImage parameter not set\nPress any key to exit...\n");
+        printf("\nLargeImage parameter not set\n");
         return;
     }
 
@@ -96,7 +94,7 @@ void initDiscord(std::string client_id) {
     handlers.errored = handleDiscordError;
     handlers.disconnected = handleDiscordDisconnected;
     if (client_id.length() < 1 || client_id.compare("123456789012345678") == 0) {
-        printf("ClientID not correct (or not set).\n Unless by god you somehow "
+        printf("ClientID not correct (or not set).\nUnless by god you somehow "
                "got 123456789012345678 as your clientid please change this to "
                "the one you registered on the website");
         Shutdown(1);
