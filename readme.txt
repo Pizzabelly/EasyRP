@@ -1,4 +1,4 @@
-EasyRP (Custom Discord Rich Presence)
+EasyRP (Custom Discord Rich Presence) https://github.com/Pizzabelly/EasyRP
 1. First you need to register a Rich Presence application with discord
      - Go here https://discordapp.com/developers/applications/me
      - Make a new application **The name of the app will be the main name for the rich presence**

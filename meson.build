@@ -4,7 +4,7 @@ project('EasyRP', 'cpp',
 
 compiler = meson.get_compiler('cpp')
 
-if host_machine.system() == 'Windows'
+if host_machine.system() == 'windows'
   windows = import('windows')
   win_resources = windows.compile_resources('EasyRP.rc')
   discordrpc = compiler.find_library('discord-rpc', dirs: meson.source_root())

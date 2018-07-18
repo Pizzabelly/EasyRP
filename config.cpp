@@ -2,11 +2,12 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <limits.h>
 #include <sstream>
 
 #define CONFIG_PATH "config.ini"
 
-std::string setVar(std::string val, config_t *c) {
+template <class T> T setVar(T val, config_t *c) {
     c->changed = true;
     return val;
 }
@@ -30,38 +31,39 @@ void config_t::update() {
 
         std::string key;
         if (std::getline(line_stream, key, '=')) {
-            key.erase(std::remove_if(key.begin(), key.end(), ::isspace),
-                      key.end());
+            key.erase(std::remove_if(key.begin(), key.end(), ::isspace), key.end());
             std::string value;
-            if (std::getline(line_stream, value)) {
-                if (isspace(value.front()))
-                    value.erase(0, 1);
-                if (key == "ClientID" && value.compare(this->client_id) != 0)
-                    this->client_id = setVar(value, this);
-                else if (key == "State" && value.compare(this->state) != 0)
-                    this->state = setVar(value, this);
-                else if (key == "Details" && value.compare(this->details) != 0)
-                    this->details = setVar(value, this);
-                else if (key == "LargeImage" &&
-                         value.compare(this->large_img.key) != 0)
-                    this->large_img.key = setVar(value, this);
-                else if (key == "SmallImage" &&
-                         value.compare(this->small_img.key) != 0)
-                    this->small_img.key = setVar(value, this);
-                else if (key == "LargeImageTooltip" &&
-                         value.compare(this->large_img.text) != 0)
-                    this->large_img.text = setVar(value, this);
-                else if (key == "SmallImageTooltip" &&
-                         value.compare(this->small_img.text) != 0)
-                    this->small_img.text = setVar(value, this);
-                else if (key == "StartTimestamp" &&
-                         value.compare(std::to_string(this->start_time)) != 0)
-                    this->start_time =
-                        std::strtoll(setVar(value, this).c_str(), NULL, 10);
-                else if (key == "EndTimestamp" &&
-                         value.compare(std::to_string(this->end_time)) != 0)
-                    this->end_time =
-                        std::strtoll(setVar(value, this).c_str(), NULL, 10);
+            if (!std::getline(line_stream, value))
+                value = "";
+            if (isspace(value.front()) && isspace(value.back()))
+                value.erase(0, 1);
+            if (key == "ClientID" && value.compare(this->client_id) != 0) {
+                this->client_id = setVar<std::string>(value, this);
+            } else if (key == "State" && value.compare(this->state) != 0) {
+                this->state = setVar<std::string>(value, this);
+            } else if (key == "Details" && value.compare(this->details) != 0) {
+                this->details = setVar<std::string>(value, this);
+            } else if (key == "LargeImage" && value.compare(this->large_img.key) != 0) {
+                this->large_img.key = setVar<std::string>(value, this);
+            } else if (key == "SmallImage" && value.compare(this->small_img.key) != 0) {
+                this->small_img.key = setVar<std::string>(value, this);
+            } else if (key == "LargeImageTooltip" &&
+                       value.compare(this->large_img.text) != 0) {
+                this->large_img.text = setVar<std::string>(value, this);
+            } else if (key == "SmallImageTooltip" &&
+                       value.compare(this->small_img.text) != 0) {
+                this->small_img.text = setVar<std::string>(value, this);
+            }
+
+            // special conditions for timestamps to avoid bad values
+            else if (key == "StartTimestamp") {
+                long long num_value = std::strtoll(value.c_str(), NULL, 10);
+                if (num_value != this->start_time)
+                    this->start_time = setVar<long long>(num_value, this);
+            } else if (key == "EndTimestamp") {
+                long long num_value = std::strtoll(value.c_str(), NULL, 10);
+                if (num_value != this->end_time)
+                    this->end_time = setVar<long long>(num_value, this);
             }
         }
     }

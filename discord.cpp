@@ -2,6 +2,7 @@
 #include <cstring>
 #include <ctime>
 #include <iostream>
+#include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string>
@@ -60,9 +61,15 @@ void updatePresence(config_t *c) {
     sprintf(buffer, "%s", c->details.c_str());
     discordPresence.details = buffer;
 
-    if (c->start_time >= 0)
+    if (c->start_time == LLONG_MAX || c->start_time == LLONG_MIN ||
+        c->end_time == LLONG_MAX || c->end_time == LLONG_MIN) {
+        printf("wew!, one (or both) of your timestamps is WAY too big");
+        return;
+    }
+
+    if (c->start_time >= 0 && c->start_time != 0LL)
         discordPresence.startTimestamp = (int64_t)c->start_time;
-    if (c->end_time >= 0)
+    if (c->end_time >= 0 && c->end_time != 0LL)
         discordPresence.endTimestamp = (int64_t)c->end_time;
 
     // make sure not to set the optional variables if they are not defined in

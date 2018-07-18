@@ -18,7 +18,8 @@ struct config_t {
     pimage_t small_img;
     pimage_t large_img;
 
-    // timestamps for game; note: these usually have to be within about 24 hours :(
+    // timestamps for game; note: these usually have to be within about 24 hours
+    // :(
     long long start_time = 0;
     long long end_time = 0;
 

@@ -16,3 +16,11 @@ using just an easy config file.
 	- if not, add the exe as a game on discord and the file path should change to your presence
 
 - You can edit the config any time while the program is running to change the presence (make sure to save the file)
+ 
+**Timestamps**
+The Start and End timestamps are in epoch/unix time. 
+Your desired values can be found [here](https://www.epochconverter.com/).
+For elapsed time set only the StartTimestamp. For remaining time set both.
+Though discord seems to only care about hours/minutes/seconds.
+As it doesnt go above 24hrs either way ¯\_(ツ)_/¯
+
