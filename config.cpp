@@ -16,10 +16,10 @@ template <class T> T setVar(T val, config_t *c) {
 void config_t::update() {
     // open config file
     std::ifstream config_file(CONFIG_PATH);
-	if (config_file.fail()) {
-    	printf("config file not found\n");
-    	Shutdown(1);
-	}
+    if (config_file.fail()) {
+        printf("config file not found\n");
+        Shutdown(1);
+    }
     // "parse" config file
     // this is super specific and is NOT proper ini parsing
     // but it works, saves memory and avoids massive dependencies
