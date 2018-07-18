@@ -1,7 +1,6 @@
 #include "config.hpp"
 #include <algorithm>
 #include <fstream>
-#include <iostream>
 #include <limits.h>
 #include <sstream>
 

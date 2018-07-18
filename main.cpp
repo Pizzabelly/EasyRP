@@ -2,10 +2,7 @@
 #include "discord.hpp"
 #include <chrono>
 #include <csignal>
-#include <iostream>
 #include <thread>
-
-#define CONFIG_PATH "config.ini"
 
 int main(void) {
     // define when to shutdown

@@ -1,9 +1,6 @@
 #include "config.hpp"
 #include <cstring>
-#include <ctime>
-#include <iostream>
 #include <limits.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string>
 
@@ -18,17 +15,17 @@ void Shutdown(int sig) {
 }
 
 // handle discord ready event
-static void handleDiscordReady(const DiscordUser *u) {
+void handleDiscordReady(const DiscordUser *u) {
     printf("\nDisplaying Presence for %s#%s\n", u->username, u->discriminator);
 }
 
 // handle discord disconnected event
-static void handleDiscordDisconnected(int errcode, const char *message) {
+void handleDiscordDisconnected(int errcode, const char *message) {
     printf("\nDiscord: disconnected (%d: %s)\n", errcode, message);
 }
 
 // handle discord error event
-static void handleDiscordError(int errcode, const char *message) {
+void handleDiscordError(int errcode, const char *message) {
     printf("\nDiscord: error (%d: %s)\n", errcode, message);
     Shutdown(1);
 }
@@ -72,8 +69,7 @@ void updatePresence(config_t *c) {
     if (c->end_time >= 0 && c->end_time != 0LL)
         discordPresence.endTimestamp = (int64_t)c->end_time;
 
-    // make sure not to set the optional variables if they are not defined in
-    // the config
+    // dont set optional variables if they are not defined in the config
     if (c->small_img.key.length() >= 1)
         discordPresence.smallImageKey = c->small_img.key.c_str();
     if (c->small_img.text.length() >= 1)
@@ -89,7 +85,7 @@ void refreshDiscord() {
     // manually handle this
     Discord_UpdateConnection();
 
-    // handle callbacks
+    // callbacks
     Discord_RunCallbacks();
 }
 
