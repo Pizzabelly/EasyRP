@@ -1,5 +1,6 @@
 #include "config.hpp"
 #include <cstring>
+#include <iostream>
 #include <limits.h>
 #include <stdio.h>
 #include <string>
@@ -11,6 +12,7 @@
 void Shutdown(int sig) {
     printf("\nshutting down...\n");
     Discord_Shutdown();
+    getchar();
     exit(sig);
 }
 
