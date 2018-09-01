@@ -40,12 +40,11 @@ void updatePresence(config_t *c) {
 
     // make sure required parameters are set, if not dont update untill they are
     // corrected
-    // TODO: find the actual character limit for state and details
-    if (c->state.length() < 1 || c->state.length() > 100) {
+    if (c->state.length() < 1 || c->state.length() > 128) {
         printf("\nState parameter is too long or not set\n");
         return;
     }
-    if (c->details.length() < 1 || c->details.length() > 100) {
+    if (c->details.length() < 1 || c->details.length() > 128) {
         printf("\nDetails parameter is too long or not set\n");
         return;
     }
