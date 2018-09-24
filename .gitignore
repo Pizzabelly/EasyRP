@@ -1,8 +1,5 @@
 # EasyRP specific files
 build*/
-libdiscord-rpc.a
-discord-rpc.dll
-discord-rpc.lib
 
 # Compiled Object files
 *.slo
