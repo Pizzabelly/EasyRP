@@ -1,14 +1,13 @@
 #include "parser.h"
-#include "config.h"
 #include "discord.h"
 #include <signal.h>
 #include <stdbool.h>
-#include <unistd.h>
 
 #define CONFIG_PATH "config.ini"
 
-#ifdef _WINDOWS
+#ifdef _WIN32 
 #include <windows.h>
+#define sleep(x) Sleep(x)
 #else
 #include <unistd.h>
 #define sleep(x) usleep((x)*1000)
@@ -16,16 +15,13 @@
 
 int main(void) {
     /* define when to shutdown */
-    signal(SIGINT, shutdown);
-    signal(SIGTERM, shutdown);
-#ifdef SIGBREAK
-    signal(SIGBREAK, shutdown);
-#endif
-
+    signal(SIGINT, shutdown_discord);
+    signal(SIGTERM, shutdown_discord);
+   
     struct ini_parser parser;
     if (!load_ini_file(&parser, CONFIG_PATH)) {
-       printf("[Error] Failed to load config file\n");
-       return 0;
+        printf("[Error] Failed to load config file\n");
+        return 0;
     }
     parse_ini(&parser);
 
@@ -37,7 +33,7 @@ int main(void) {
     while (true) {
         if (!load_ini_file(&parser, CONFIG_PATH)) {
             printf("[Error] Config file moved or deleted\n");
-            shutdown(1);
+            shutdown_discord(1);
         }
         parse_ini(&parser);
         if (parser.changed) {

@@ -12,14 +12,14 @@ typedef struct {
 
 typedef struct {
     uint32_t count;
+    uint32_t max_count;
     pair pair_data[100];
-} ini_t;
+} ini_data;
 
 struct ini_parser {
-    ini_t data;
-    FILE* file_data;
+    ini_data data;
+    FILE* file;
     bool changed;
-    char* path;
 };
 
 void parse_ini(struct ini_parser* p);

@@ -4,7 +4,7 @@ project('EasyRP', 'c',
 
 compiler = meson.get_compiler('c')
 
-src = ['main.c', 'parser.c', 'config.c', 'discord.c']
+src = ['parser.c', 'discord.c', 'main.c']
 
 if host_machine.system() == 'windows'
   windows = import('windows')

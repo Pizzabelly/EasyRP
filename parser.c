@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "parser.h"
 #include <stdbool.h>
 #include <string.h>
@@ -8,8 +10,8 @@
 
 /* loads the file at the given path into memory */
 bool load_ini_file(struct ini_parser* p, const char* path) {
-    p->file_data = fopen(path, "r");
-    if (p->file_data == NULL) return false;
+    p->file = fopen(path, "r");
+    if (p->file == NULL) return false;
     p->data.count = 0;
     return true;
 }
@@ -27,12 +29,13 @@ char* get_ini_value(struct ini_parser* p, const char* sec, const char* key) {
 
 /* map infomation in the file text to usable format */
 void parse_ini(struct ini_parser* p) {
+
     /* initial values */
     char* line = malloc(sizeof(char) * 256);
     char* current_section = "root";
 
     /* iterate each line in the config file */
-    while(fgets(line, 256, p->file_data) != NULL) {
+    while(fgets(line, 256, p->file) != NULL) {
         char front = *line; // first character for the line
 
         /* skip ini comments */
@@ -58,17 +61,22 @@ void parse_ini(struct ini_parser* p) {
         current_pair.value = value;
 
         /* check if this value is different */
-        printf("%s, %s\n", current_pair.section, current_pair.key);
-        char* prev_value = get_ini_value(p, current_pair.section, current_pair.key);
-        printf("%s\n", prev_value);
-        if (strcmp(prev_value, "") != 0) {
-            printf("test\n");
-            if (strcmp(prev_value, value) != 0) p->changed = true; 
+        if (p->data.count + 1 <= p->data.max_count) {
+            pair prev = p->data.pair_data[p->data.count];
+            if (strcmp(prev.section, current_pair.section) == 0 && 
+                    strcmp(prev.key, current_pair.key) == 0)
+                if (strcmp(prev.value, current_pair.value) != 0) p->changed = true;
         } 
-        
+
         /* add pair to the array */
         p->data.pair_data[p->data.count] = current_pair;
         p->data.count++;
-        line[0] = '\0'; // reset line
+
+        /* adjust max count */
+        if (p->data.count > p->data.max_count)
+            p->data.max_count = p->data.count; 
+
+        /* reset line */
+        line[0] = '\0';
     }
 }
