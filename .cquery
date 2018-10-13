@@ -1,0 +1,4 @@
+%clang-cl.exe
+%c -std=c99
+
+-I/discord-rpc/include
