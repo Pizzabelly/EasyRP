@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "parser.h"
-
-#define DISCORD_DISABLE_IO_THREAD
 #include "discord_rpc.h"
 
 /* shutdown discord-rpc */
@@ -40,8 +38,8 @@ static void print_config_values(const DiscordRichPresence* d,
          d->largeImageText);
   printf("Small Image: '%s' with toolip, '%s'\n", d->smallImageKey,
          d->smallImageText);
-  printf("Start Time: %lld\n", d->startTimestamp);
-  printf("End Time: %lld\n", d->endTimestamp);
+  printf("Start Time: %ld\n", d->startTimestamp);
+  printf("End Time: %ld\n", d->endTimestamp);
 }
 
 /* update discord presence */
@@ -121,7 +119,7 @@ void init_discord(char* client_id) {
     printf(
         "ClientID not correct (or not set).\nUnless by god you somehow "
         "got 123456789012345678 as your clientid please change this to "
-        "the one you registered on the website");
+        "the one you registered on the website\n");
     shutdown_discord(1);
   }
   Discord_Initialize(client_id, &handlers, 1, NULL);
