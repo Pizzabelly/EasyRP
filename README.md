@@ -28,7 +28,7 @@ As it doesnt go above 24hrs either way ¯\\\_(ツ)\_/¯
 **Building**  
 To build EasyRP from source you need the following
   - any c++ compiler (cl, g++, clang++, etc)
-  - Meson
+  - Meson (0.45 or higher)
   - Ninja
   - CMake (for discord-rpc library)  
   
