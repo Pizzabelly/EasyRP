@@ -1,10 +1,14 @@
 cmake_minimum_required(VERSION 3.0)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_SUPPRESS_REGENERATION true)
-set(CMAKE_C_FLAGS_DEBUG "-g")
-set(CMAKE_C_FLAGS_RELEASE "-O2")
+if (UNIX)
+   set(CMAKE_C_FLAGS_DEBUG "-g -fPIC")
+   set(CMAKE_C_FLAGS_RELEASE "-O2 -fPIC")
+endif (UNIX)
 
 project(EasyRP)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # discord-rpc subproject
 set(ENABLE_IO_THREAD OFF CACHE INTERNAL "disable io thread for discord-rpc" FORCE) 

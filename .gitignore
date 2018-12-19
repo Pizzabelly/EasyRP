@@ -1,5 +1,7 @@
-# EasyRP specific files
+# specific files
 build*/
+compile_commands.json
+
 
 # Compiled Object files
 *.slo

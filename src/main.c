@@ -1,4 +1,5 @@
 #include <signal.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include "discord.h"
 #include "parser.h"
@@ -23,6 +24,8 @@ int main(void) {
     printf("[Error] Failed to load config file\n");
     return 0;
   }
+
+  parser.data.max_count = 0;
   parse_ini(&parser);
 
   /* start discord-rpc */

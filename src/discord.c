@@ -31,15 +31,15 @@ static void handleDiscordError(int errcode, const char* message) {
 /* print values for the current settings from the config file */
 static void print_config_values(const DiscordRichPresence* d,
                                 const char* client_id) {
-  printf("Current Presence (%s) :\n", client_id);
+  printf("Current Presence (%s):\n", client_id);
   printf("State: %s\n", d->state);
   printf("Details: %s\n", d->details);
   printf("Large Image: '%s' with toolip, '%s'\n", d->largeImageKey,
          d->largeImageText);
   printf("Small Image: '%s' with toolip, '%s'\n", d->smallImageKey,
          d->smallImageText);
-  printf("Start Time: %ld\n", d->startTimestamp);
-  printf("End Time: %ld\n", d->endTimestamp);
+  printf("Start Time: %lld\n", d->startTimestamp);
+  printf("End Time: %lld\n", d->endTimestamp);
 }
 
 /* update discord presence */
@@ -50,28 +50,26 @@ void update_presence(struct ini_parser* p) {
 
   /* check required variables */
   char* state = get_ini_value(p, "State", "State");
-  if (strlen(state) < 1 || strlen(state) > 128) {
-    printf("[Warning] State parameter is too long or not set\n");
+  if (strlen(state) < 1) {
+    printf("[Warning] State parameter is not set\n");
     return;
   }
-  char* details = get_ini_value(p, "State", "Details");
-  if (strlen(details) < 1 || strlen(details) > 128) {
-    printf("[Warning] Details parameter is too long or not set\n");
-    return;
-  }
-  char* large_image_key = get_ini_value(p, "Images", "LargeImage");
-  if (strlen(large_image_key) < 1 || strlen(large_image_key) > 128) {
-    printf("[Warning] LargeImage parameter is too long or not set\n");
-    return;
-  }
-
   discordPresence.state = state;
-  discordPresence.largeImageKey = large_image_key;
+  char* details = get_ini_value(p, "State", "Details");
+  if (strlen(details) < 1) {
+    printf("[Warning] Details parameter is not set\n");
+    return;
+  }
   discordPresence.details = details;
+  char* large_image_key = get_ini_value(p, "Images", "LargeImage");
+  if (strlen(large_image_key) < 1) {
+    printf("[Warning] LargeImage parameter is not set\n");
+    return;
+  }
+  discordPresence.largeImageKey = large_image_key;
 
-  long long start_time, end_time;
-  start_time = strtoll(get_ini_value(p, "State", "StartTimestamp"), NULL, 10);
-  end_time = strtoll(get_ini_value(p, "State", "EndTimestamp"), NULL, 10);
+  int64_t start_time = strtoll(get_ini_value(p, "State", "StartTimestamp"), NULL, 10);
+  int64_t end_time = strtoll(get_ini_value(p, "State", "EndTimestamp"), NULL, 10);
   if (start_time == LLONG_MAX || start_time == LLONG_MIN) {
     printf("[Error] StartTimestamp value is not a valid number\n");
     return;
@@ -81,8 +79,8 @@ void update_presence(struct ini_parser* p) {
     return;
   }
 
-  discordPresence.startTimestamp = (int64_t)start_time;
-  discordPresence.endTimestamp = (int64_t)end_time;
+  discordPresence.startTimestamp = start_time;
+  discordPresence.endTimestamp = end_time;
 
   /* dont set optional variables if they are not defined in the config */
   char* small_image_key = get_ini_value(p, "Images", "SmallImage");
@@ -115,11 +113,9 @@ void init_discord(char* client_id) {
   handlers.ready = handleDiscordReady;
   handlers.errored = handleDiscordError;
   handlers.disconnected = handleDiscordDisconnected;
-  if (strlen(client_id) < 1 || strcmp(client_id, "123456789012345678") == 0) {
+  if (strlen(client_id) < 1 || strcmp(client_id, "1234567890123456789") == 0) {
     printf(
-        "ClientID not correct (or not set).\nUnless by god you somehow "
-        "got 123456789012345678 as your clientid please change this to "
-        "the one you registered on the website\n");
+        "ClientID not correct (or not set).\n");
     shutdown_discord(1);
   }
   Discord_Initialize(client_id, &handlers, 1, NULL);

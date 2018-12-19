@@ -28,6 +28,27 @@ char* get_ini_value(struct ini_parser* p, const char* sec, const char* key) {
   return "";
 }
 
+bool parse_line(char* line, pair* c) {
+  int equal_index = strchr(line, '=')-line;
+  if (equal_index < 0) return false;
+  int len = strlen(line);
+  char* key = malloc(sizeof(char) * equal_index);
+  char* value = malloc(sizeof(char) * len - equal_index);
+  int key_start = 0;
+  int value_start = 0;
+  for (int i = 0; i < len - 1; i++) {
+    if (key_start < equal_index && line[i] != ' ')
+      key[key_start++] = line[i];
+    if (i > equal_index)
+      value[value_start++] = line[i];
+  }
+  key[key_start] = '\0';
+  value[value_start] = '\0';
+  c->key = key;
+  c->value = value;
+  return true;
+}
+
 /* map infomation in the file text to usable format */
 void parse_ini(struct ini_parser* p) {
   /* initial values */
@@ -36,8 +57,8 @@ void parse_ini(struct ini_parser* p) {
 
   /* iterate each line in the config file */
   while (fgets(line, 256, p->file) != NULL) {
+    size_t len = strlen(line);
     char front = *line;  // first character for the line
-
     /* skip ini comments */
     if (front == ';')
       continue;
@@ -45,21 +66,17 @@ void parse_ini(struct ini_parser* p) {
     /* map sections of the ini */
     else if (front == '[') {
       line++;
-      current_section = malloc(strlen(line) + 1);
-      memcpy(current_section, line, strlen(line) - 2);
+      current_section = malloc(sizeof(char) * (len + 1));
+      strncpy(current_section, line, len - 3);
+      current_section[len-3] = '\0';
       continue;
     }
 
-    /* set values for this line if applicable */
     pair current_pair;  // struct for this line's info
-    current_pair.section = current_section;
 
     /* find the key and value of the line */
-    char* key = malloc(sizeof(char) * 128);
-    char* value = malloc(sizeof(char) * 256);
-    sscanf(line, "%[^=]=%[^\n] ", key, value);
-    current_pair.key = key;
-    current_pair.value = value;
+    if (!parse_line(line, &current_pair)) continue;
+    current_pair.section = current_section;
 
     /* check if this value is different */
     if (p->data.count + 1 <= p->data.max_count) {
