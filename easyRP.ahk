@@ -57,7 +57,7 @@ WinClose, ahk_exe easyrp.exe  ;Specify the .exe filename of your easyrp.exe(whic
 	
 WinWaitClose, ahk_exe easyrp.exe  ;Specify the .exe filename of your easyrp.exe(which is the default filename)-Script waits till the easyrp.exe file has closed.
 	
-ExitApp  ;Terinates the Script.
+ExitApp  ;Terminates the Script.
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
