@@ -55,7 +55,7 @@ WinWaitClose, ahk_exe <.exe file name>	;Script waits until your main Application
 WinShow, ahk_exe easyrp.exe  ;Specify the .exe filename of your easyrp.exe(which is the default filename)-Activates the hidden easyrp.exe file which was running in hidden mode.
 WinClose, ahk_exe easyrp.exe  ;Specify the .exe filename of your easyrp.exe(which is the default filename)-Closes the easyrp.exe file as it is no longer needed to show the RP on discord.
 	
-WinWaitClose, ahk_exe scite.exe  ;Specify the .exe filename of your easyrp.exe(which is the default filename)-Script waits till the easyrp.exe file has closed.
+WinWaitClose, ahk_exe easyrp.exe  ;Specify the .exe filename of your easyrp.exe(which is the default filename)-Script waits till the easyrp.exe file has closed.
 	
 ExitApp  ;Terinates the Script.
 
