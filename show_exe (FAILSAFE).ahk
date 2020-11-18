@@ -1,5 +1,5 @@
 ;-------------------------------------------------------------**SCRIPT WON'T WORK UNTIL YOU EDIT IT ACCORDING TO YOUR NEEDS!**----------------------------------------------------------
-;Basically what this script does is that if you get your RP or scripts messed up and wanna close the easyrp.exe file running in hidden mode, the script unhides it for you so that you can close it or whatever.
+;Basically what this script does is that if you get your RP or scripts messed up and wanna MANUALLY close the easyrp.exe file running in hidden mode, the script unhides it for you so that you can close it or whatever.
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
