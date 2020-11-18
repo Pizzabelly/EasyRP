@@ -50,7 +50,7 @@ Now, running the AHK script instead of your App can be confusing and cumbersome.
 <br>Something like this
 </p>
 
-**Note: You can always manually control the easyrp.exe and the .ahk files from the Task Manager window if any issues occur.**
+**Note: You can always manually control the easyrp.exe and the .ahk files from the Task Manager window if any issues occur.**<br><p align=center>Also AHK isn't still supported by Linux :(</p>
 
 ## Building  
 To build EasyRP from source you need the following
