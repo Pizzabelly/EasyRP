@@ -77,9 +77,9 @@ void config_t::print() {
     printf("\nCurrent Presence (%s) :", this->client_id.c_str());
     printf("\nState: %s", this->state.c_str());
     printf("\nDetails: %s", this->details.c_str());
-    printf("\nLarge Image: '%s' with toolip, '%s'", this->large_img.key.c_str(),
+    printf("\nLarge Image: '%s' with tooltip, '%s'", this->large_img.key.c_str(),
            this->large_img.text.c_str());
-    printf("\nSmall Image: '%s' with toolip, '%s'", this->small_img.key.c_str(),
+    printf("\nSmall Image: '%s' with tooltip, '%s'", this->small_img.key.c_str(),
            this->small_img.text.c_str());
     printf("\nStart Time: %lld", this->start_time);
     printf("\nEnd Time: %lld\n", this->end_time);
