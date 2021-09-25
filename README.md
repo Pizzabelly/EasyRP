@@ -10,7 +10,7 @@ using just an easy config file.
      - Enable rich presence for your app and add some assets
 - Download the latest release of EasyRP from here https://github.com/Pizzabelly/EasyRP/releases 
   - if you are on Windows you also need [Visual C++ Redistributable](https://www.microsoft.com/en-US/download/details.aspx?id=48145)  
-- Edit the config file with the information from your newly registered app
+- Edit the config file (use the asset names for the image names) with the information from your newly registered app
 - Run the [EasyRP executable](https://github.com/Pizzabelly/EasyRP/releases) (it should open a cmd window)
     - It *should* report errors from your config file (if there are any)
 - Discord should show the game on your profile
