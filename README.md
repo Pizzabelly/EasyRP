@@ -25,7 +25,7 @@ For elapsed time set only the StartTimestamp. For remaining time set both.
 Though discord seems to only care about hours/minutes/seconds.
 As it doesnt go above 24hrs either way ¯\\\_(ツ)\_/¯
 
-## Automation (Provided by [bBSempai](https://github.com/bBSempai))
+## Automation (Provided by [bhavyagosai](https://github.com/bhavyagosai))
 
 - Upon running an AHK script you can automate your tasks. In order to do this follow the steps above but you don't need to edit the config file yet.
 - Install [AHK](https://www.autohotkey.com/) (Takes up <15 Mb worth of space). Your .ahk scripts would not work without installing this.
